@@ -38,6 +38,7 @@ class ProxyListScraper:
                     protocol = cells[0].text.strip()
                     ip = cells[1].text.strip()
                     port = cells[2].text.strip()
+                    # 位置信息可以保留但不拼接，也可直接删除这行（不影响核心逻辑）
                     location = cells[3].text.strip() if len(cells) > 3 else "未知"
                     
                     # 清理位置信息中的多余文本
@@ -47,7 +48,9 @@ class ProxyListScraper:
                     
                     if protocol and ip and port:
                         # 使用标准代理格式：协议://ip:port [地址位置]
-                        proxy = f"{protocol}://{ip}:{port} [{location}]"
+                        # proxy = f"{protocol}://{ip}:{port} [{location}]"
+                        # 核心修改：移除 [location] 部分，仅保留 协议://ip:port
+                        proxy = f"{protocol}://{ip}:{port}"
                         proxies.append(proxy)
             
             print(f"成功抓取到 {len(proxies)} 个代理")
